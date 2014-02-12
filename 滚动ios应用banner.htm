@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		*, html, body {
+			margin: 0;
+			padding: 0;
+		}
+
+		#div1 {
+			position: relative;
+			width: 100%;
+			height: 638px;
+			background: #ccc;
+			overflow: hidden;
+		}
+
+		#div1 ul {
+			position: absolute;
+			width: 4777px;
+			height: 636px;
+		}
+
+		#div1 ul li {
+			float: left;
+			list-style: none;
+			margin-left: 170px;
+		}
+
+		#left {
+			position: absolute;
+			
+			top: 50%;
+			margin-top: -60px;
+			cursor: pointer;
+		}
+
+		#right {
+			position: absolute;
+			
+			top: 50%;
+			margin-top: -60px;
+			right: 0;
+			cursor: pointer;
+			display: none;
+		}
+	</style>
+	<script type="text/javascript">
+		window.onload = function() {
+			var oDiv = document.getElementById('div1');
+			var oUl = oDiv.getElementsByTagName('ul')[0];
+			var oPic = oUl.getElementsByTagName('img');
+			var oLeft = document.getElementById('left');
+			var oRight = document.getElementById('right');
+			
+			var speed = 5;
+			var timer = null;
+
+
+			oUl.innerHTML = oUl.innerHTML + oUl.innerHTML;
+			oUl.style.width = (oPic[0].offsetWidth+170) * oPic.length + 'px'; //因为给了每个li一个左margin=170px
+
+			var move =  function(){
+				if(oUl.offsetLeft < -oUl.offsetWidth/2) {
+					oUl.style.left = 0;
+				}
+				if(oUl.offsetLeft > 0) {
+					oUl.style.left = -oUl.offsetWidth/2 + 'px';
+				}
+				oUl.style.left = oUl.offsetLeft+speed+'px';
+			}
+
+			timer = setInterval(move, 30);
+
+			for(var i = 0; i < oPic.length; i++) {
+				oPic[i].index = i;
+				oPic[i].onmouseover = function() {
+					clearInterval(timer);
+					this.src = 'img-apple1/a'+(this.index%4+1)+'-info.png';
+				}
+				oPic[i].onmouseout = function() {
+			 		timer = setInterval(move, 30);
+			 		this.src = 'img-apple1/a'+(this.index%4+1)+'.jpg';
+				 }
+			}
+			oLeft.onclick = function() {
+				speed = -5;
+				this.style.display = 'none';
+				oRight.style.display = 'block';
+			}
+			oRight.onclick = function() {
+				speed = 5;
+				this.style.display = 'none';
+				oLeft.style.display = 'block';
+			}
+			
+		};
+	</script>
+</head>
+<body>
+	<div id="div1">
+		<ul>
+			<li><img src="img-apple1/a1.jpg"></li>
+			<li><img src="img-apple1/a2.jpg"></li>
+			<li><img src="img-apple1/a3.jpg"></li>
+			<li><img src="img-apple1/a4.jpg"></li>
+		</ul>
+		<img id="left" src="img-apple1/left.png">
+		<img id="right" src="img-apple1/right.png">
+	</div>
+</body>
+</html>
